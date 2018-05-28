@@ -1,0 +1,66 @@
+
+body {
+    background: rgb(36, 34, 34);
+
+    background-image: url("images/Github-Free-PNG-Image.png");
+    background-position-x: center;
+    background-position-y: center;
+}
+
+.frame {
+    background-image: url("images/Github-Free-PNG-Image.png");
+    background-position-x: center;
+    background-position-y: center;
+}
+
+h1 {
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
+    color: white;
+    position: relative;
+    size: 100px;
+}
+
+h1:hover {
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 35px;
+    opacity: 0.6;
+}
+
+#com {
+    color: maroon;
+}
+
+#openNav {
+    background-color: maroon;
+    color: white;
+}
+
+.GB-background-maroon {
+    background-color: maroon;
+}
+
+.GB-background-grey {
+    background-color: rgb(36, 34, 34);
+}
+
+.GB-color-maroon {
+    color: maroon;
+}
+
+.GB-color-white {
+    color: white;
+}
+
+.GB-color-grey {
+    color: rgb(36, 34, 34);
+}
+
+.GB-color-grey:hover {
+    color: maroon;
+}
+
+.GB-al-rigth {
+    grid-row-end: initial;
+}
