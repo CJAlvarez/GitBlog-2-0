@@ -16,6 +16,10 @@ var userTorrent = {};
 
 // AUTENTICACIÓN CON GOOGLE
 function signInGoogle() {
+    try {
+        signOut();
+    } catch (error) {}
+    
     if (!firebase.auth().currentUser) {
         var provider = new firebase.auth.GoogleAuthProvider();
 
@@ -103,6 +107,11 @@ function blank_div() {
         console.log("CLEANING");
         div.removeChild(div.lastChild);
     }
+    div = document.getElementById('people-container')
+    while (div.hasChildNodes()) {
+        console.log("CLEANING");
+        div.removeChild(div.lastChild);
+    }
 }
 
 function showReal(flag) {
@@ -127,6 +136,7 @@ function refrehBoard() {
     if (firebase.auth().currentUser) {
         blank_div();
         renderHTML_All();
+        refreshPeople();
     }
 }
 
@@ -154,6 +164,16 @@ function cleanField() {
     document.getElementById('field').textContent = "";
 }
 
+function visibility() {
+    text = document.getElementById('Show-all').textContent;
+    console.log(text);
+    if(text == '  Público') {
+        document.getElementById('Show-all').textContent = '  Privado';
+    } else {
+        document.getElementById('Show-all').textContent = '  Público';
+    }
+}
+
 // LISTENERS
 document.getElementById('GB-Hecho').addEventListener('click', addMessage, false);
 document.getElementById('login_image').addEventListener('click', signInGoogle, false);
@@ -161,6 +181,7 @@ document.getElementById('login_button').addEventListener('click', signInGoogle, 
 document.getElementById('logout_button').addEventListener('click', signOut, false);
 document.getElementById('BigTitle').addEventListener('click', goHome, false);
 document.getElementById('refresh_button').addEventListener('click', refrehBoard, false);
+document.getElementById('GB-Visibilidad').addEventListener('click', visibility, false);
 
 var database = firebase.database();
 
@@ -203,17 +224,25 @@ function renderHTML(message) {
 }
 
 function refreshPeople() {
-    return firebase.database().ref('/users/' + intern.val().uid).once('value').then(function (atom) {
-        messagesContainer.insertAdjacentHTML('beforeEnd', '<div class="w3-container w3-card w3-white w3-margin-bottom"><h2 class="w3-text-grey w3-padding-16"><img class="w3-card w3-black" src="'
-            + atom.val().photoUrl + '" border="0" width="55" height="55">   '
-            + atom.val().name + '</h2><p class="w3-opacity w3-container w3-card w3-padding">' + intern.val().text +
-            '</p><div class="w3-container"></div></div>');
+    return firebase.database().ref('/users').once('value').then(function (snapshot) {
+        // FOR_EACH
+        snapshot.forEach(function (data) {
+            // REAL_CAPTURE
+            document.getElementById("people-container").insertAdjacentHTML('beforeEnd', '<h5 class="w3-button w3-card w3-light-grey w3-padding-16" onclick="selectPerson(\'' + data.val().uid + '\')" id=\'' + data.val().uid + '\'><img class="w3-card w3-black" src="'
+                + data.val().photoUrl + '" border="0" width="55" height="55"><b>    ' + data.val().name + '</b></h5>');
+            // END REAL_CAPTURE
+        });
+        // END FOR_EACH
     });
 }
 
+
+
 function selectPerson(person) {
-    var temp = document.getElementById('field').textContent;
-    document.getElementById('field').textContent = "@" + person + " " + temp;
+    firebase.database().ref('/users/'+person).once('value').then(function (snapshot) {
+        var temp = document.getElementById('field').textContent;
+        document.getElementById('field').textContent = "@" + snapshot.val().name + " " + temp;
+    });
 }
 
 function renderHTML_All() {
