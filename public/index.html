@@ -2,15 +2,15 @@
 <!-- Examen de Experiencia de Usuario. -->
 <!-- GitBlog. -->
 
-<html lang="en">
+<html lang="es">
 
 <head>
     <!-- CDN Bootstrap. -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -19,34 +19,32 @@
     <title>GitBlog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="images/Github-Free-PNG-Image.png" />
-
+    
     <!-- Diseño. -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
     <link rel="stylesheet" href="main.css" />
 
     <!-- Firebase. -->
-    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 
     <!-- Google. -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
     <!-- JQuerty. -->
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-
 </head>
 
-<body>
+<body onloadstart="showReal(false)">
     <!-- Sidebar. -->
     <div class="w3-sidebar w3-bar-block w3-card w3-center w3-animate-left" style="display:none" id="mySidebar" onclick="w3_close()">
 
         <a href="#" class="w3-bar-item w3-button" style="display:block" id="login_button">
             <i class="fa fa-user GB-color-grey" style="font-size:30px;"></i>
         </a>
-        <a href="#" class="w3-bar-item w3-button ">
-            <i class="fa fa-home GB-color-grey" style="font-size:30px;" id="home_item"></i>
+        <a href="#" class="w3-bar-item w3-button " style="display:none" id="refresh_button">
+            <i class="fa fa-refresh GB-color-grey" style="font-size:30px;"></i>
         </a>
-        <a href="#" class="w3-bar-item w3-button">
+        <a href="#" class="w3-bar-item w3-button" style="display:none" id="notification_button">
             <i class="fa fa-bell GB-color-grey" style="font-size:30px;"></i>
         </a>
         <a href="#" class="w3-bar-item w3-button" style="display:none" id="logout_button">
@@ -65,26 +63,33 @@
 
             <!-- BigTitle-->
             <div id="BigTitle" class="w3-rest" onclick="w3_close()">
-                <h1>GitBlog
-                    <small id="com">.com</small>
+                <h1>GitBlog<small id="com">.com</small>
                 </h1>
             </div>
         </div>
 
+        <!-- WELLCOME TITLE. -->
+
+        <div class="bgimg w3-display-container w3-animate-opacity w3-text-white" style="display:block" id="wellcome_Board">
+            <h1 class="w3-jumbo w3-animate-center" style="object-position: center; margin-top: 10%;">¡Bienvenido a
+                <large class="GB-color-maroon" id="GB-size-h1">GitBlog</large>!</h1>
+            <h3 class="w3-jumbo w3-animate-center" style="object-position: center;text-align: center;"> Únete... </h3>
+            <img class="w3-center GB-animation-hover" id="login_image" src="images/GH_marron.png" style="position: relative; top: 50%; left: 36.5%;"
+                border="0" width="25%" height="25%">
+        </div>
         <!-- Content (The Grid). -->
-        <div class="frame w3-row-padding" onclick="w3_close()">
+        <div class="frame w3-row-padding" style="display:none" onclick="w3_close()" id="Real-content">
 
 
-            <!-- Right Column -->
-            <div class="w3-twothird" id="messages-container">
-
+            <!-- Left Column -->
+            <div class="w3-twothird">
                 <div class="w3-container w3-card w3-white w3-margin-bottom">
                     <div class="w3-container w3-padding">
 
                         <h6 class="w3-opacity">¿Qué hay de nuevo?</h6>
 
                         <!-- Text Field. -->
-                        <p contenteditable="true" class="w3-border w3-padding" id="field">Actualización...</p>
+                        <p  contenteditable="false" class="w3-border w3-padding" id="field">Actualización...</p>
 
                         <!-- Button (HECHO). -->
                         <button type="button" class="w3-button GB-background-maroon GB-color-white" id="GB-Hecho">
@@ -96,33 +101,36 @@
                     </div>
                 </div>
 
-                <div class="w3-container w3-card w3-white w3-margin-bottom">
-                    <h2 class="w3-text-grey w3-padding-16">
-                        <i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge GB-color-maroon"></i>Historia</h2>
+                <!-- CONTAINER ( MESSAGES ). -->
+                <div id="messages-container"> </div>
+                <!-- END CONTAINER ( MESSAGES ). -->
 
-                    <div class="w3-container">
-                    </div>
-                </div>
-
-                <!-- End Right Column -->
+                <!-- End Left Column -->
             </div>
 
-            <!-- Left Column -->
+            <!-- Rigth Column -->
             <div class="w3-third">
                 <div class="w3-white w3-text-grey w3-card-4">
                     <div class="w3-container w3-card w3-white w3-margin-bottom">
                         <h2 class="w3-text-grey w3-padding-16">
                             <i class="fa fa-user fa-fw w3-margin-right w3-xxlarge GB-color-maroon"></i>Personas...</h2>
                         <div class="w3-container">
-                            <h5 class="w3-opacity">
+                            <h5 class="w3-opacity w3-button" onclick="selectPerson(pilot)" id="pilot">  
                                 <b>"Listado de personas"</b>
                             </h5>
                         </div>
                     </div>
                 </div>
-                <!-- End Left Column -->
+                <!-- End Rigth Column -->
             </div>
             <!-- End Grid -->
         </div>
 
-      
+        <!-- End Main. -->
+    </div>
+
+    <script src="main.js"></script>
+
+</body>
+
+</html>

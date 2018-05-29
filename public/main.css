@@ -17,7 +17,6 @@ h1 {
     font-family: "Montserrat", sans-serif;
     text-align: center;
     color: white;
-    position: relative;
     size: 100px;
 }
 
@@ -26,6 +25,14 @@ h1:hover {
     transition: 0.3s;
     font-size: 35px;
     opacity: 0.6;
+}
+
+.GB-animation-hover:hover {
+    cursor: pointer;
+    opacity: 0.6; 
+}
+.GB-animation-hover {
+    transition: 0.3s;
 }
 
 #com {
